@@ -241,48 +241,21 @@ async function solve(question){
   document.getElementById('send-btn').disabled=true;
 
   try{
-    const res=await fetch('/api/solve',{
+    const fetchRes=await fetch('/api/solve',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({question})
     });
     th.remove();
-    if(!res.ok)throw new Error('Сервер алдаа: '+res.status);
+    if(!fetchRes.ok)throw new Error('Сервер алдаа: '+fetchRes.status);
+    const data=await fetchRes.json();
+    if(data.error)throw new Error(data.error);
+    const full=(data.text||'').trim();
+    if(!full)throw new Error('Хариу хоосон ирлээ — дахин оролдоно уу');
 
     const ab=document.createElement('div');ab.className='bubble-ai';
-    const cursor=document.createElement('span');cursor.className='cursor';
-    ab.innerHTML='<span class="ai-lbl">∑ СтатШийдвэрлэгч</span>';
-    const textEl=document.createElement('span');
-    ab.appendChild(textEl);ab.appendChild(cursor);
+    ab.innerHTML='<span class="ai-lbl">∑ СтатШийдвэрлэгч</span>'+esc(full);
     output.appendChild(ab);
-
-    const reader=res.body.getReader();
-    const decoder=new TextDecoder();
-    let full='';
-    let leftover='';
-    while(true){
-      const{done,value}=await reader.read();
-      if(done)break;
-      const chunk=leftover+decoder.decode(value,{stream:true});
-      const lines=chunk.split('\n');
-      leftover=lines.pop()||'';
-      for(const line of lines){
-        const trimmed=line.trim();
-        if(!trimmed.startsWith('data:'))continue;
-        const d=trimmed.slice(5).trim();
-        if(d==='[DONE]')continue;
-        try{
-          const j=JSON.parse(d);
-          if(j.error)throw new Error(j.error.message||'API алдаа');
-          const delta=j.choices?.[0]?.delta?.content;
-          if(delta){full+=delta;textEl.textContent=full;output.scrollTop=output.scrollHeight;}
-        }catch(parseErr){
-          if(parseErr.message&&parseErr.message!=='API алдаа')continue;
-        }
-      }
-    }
-    cursor.remove();
-    if(!full.trim()){textEl.textContent='Хариу ирсэнгүй — дахин оролдоно уу.';}
     saveToHistory(question,full);
   }catch(e){
     th.remove();
