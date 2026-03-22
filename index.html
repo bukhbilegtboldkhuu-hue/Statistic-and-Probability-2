@@ -6,15 +6,15 @@
 <meta name="theme-color" content="#0a0c0f"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="apple-mobile-web-app-title" content="СтатШийдвэрлэгч"/>
-<title>СтатШийдвэрлэгч</title>
+<meta name="apple-mobile-web-app-title" content="УхаантайПзд"/>
+<title>УхаантайПзд</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 :root{
   --bg:#0a0c0f;--surface:#111318;--surface2:#181c23;
   --border:#1e2530;--border2:#2a3340;
-  --accent:#00e5a0;--accent-dim:rgba(0,229,160,0.12);
+  --accent:#3b82f6;--accent-dim:rgba(59,130,246,0.12);
   --text:#e8ecf0;--muted:#6b7a8d;--muted2:#8a9ab0;
   --danger:#ff4d6d;
 }
@@ -28,7 +28,7 @@ body{background:var(--bg);color:var(--text);display:flex;flex-direction:column;}
 
 .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 10px;padding-top:max(14px,env(safe-area-inset-top));background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
 .nav-logo{display:flex;align-items:center;gap:10px;}
-.logo-mark{width:34px;height:34px;background:var(--accent);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:#0a0c0f;}
+.logo-mark{width:34px;height:34px;background:var(--accent);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:#ffffff;}
 .nav-title{font-size:16px;font-weight:800;letter-spacing:-.3px;}
 .nav-sub{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;}
 .icon-btn{width:36px;height:36px;border:1px solid var(--border);border-radius:9px;background:var(--surface2);color:var(--muted2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;}
@@ -50,7 +50,7 @@ body{background:var(--bg);color:var(--text);display:flex;flex-direction:column;}
 .chip{padding:8px 14px;background:var(--surface2);border:1px solid var(--border2);border-radius:20px;font-size:12px;color:var(--muted2);font-family:'JetBrains Mono',monospace;cursor:pointer;}
 .chip:active{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
 
-.bubble-user{background:var(--accent-dim);border:1px solid rgba(0,229,160,.25);border-radius:16px 16px 4px 16px;padding:12px 14px;font-size:14px;color:var(--text);align-self:flex-end;max-width:88%;line-height:1.5;}
+.bubble-user{background:var(--accent-dim);border:1px solid rgba(59,130,246,.25);border-radius:16px 16px 4px 16px;padding:12px 14px;font-size:14px;color:var(--text);align-self:flex-end;max-width:88%;line-height:1.5;}
 .bubble-ai{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:4px 16px 16px 4px;padding:14px 16px;font-size:13px;color:var(--text);align-self:flex-start;max-width:100%;line-height:1.75;white-space:pre-wrap;font-family:'JetBrains Mono',monospace;}
 .bubble-ai .ai-lbl{font-size:9px;font-weight:700;letter-spacing:1.8px;color:var(--accent);text-transform:uppercase;margin-bottom:8px;display:block;}
 .bubble-err{border-left-color:var(--danger);}
@@ -111,8 +111,8 @@ body{background:var(--bg);color:var(--text);display:flex;flex-direction:column;}
   <div class="nav-logo">
     <div class="logo-mark">Σ</div>
     <div>
-      <div class="nav-title">СтатШийдвэрлэгч</div>
-      <div class="nav-sub">AI · Монгол · Үнэгүй</div>
+      <div class="nav-title">УхаантайПзд</div>
+      
     </div>
   </div>
   <div style="display:flex;gap:6px;">
@@ -135,8 +135,8 @@ body{background:var(--bg);color:var(--text);display:flex;flex-direction:column;}
   <div class="chat-output" id="output">
     <div class="empty-state" id="empty-state">
       <div class="empty-icon">∑</div>
-      <div class="empty-title">Бодлого тавиарай</div>
-      <div class="empty-sub">Монгол хэлээр дурын статистик,<br/>магадлалын бодлогоо бичнэ үү</div>
+      <div class="empty-title">Бодлого оруул бодоод өгье агаан дүү</div>
+      <div class="empty-sub"></div>
       <div class="empty-chips">
         <div class="chip" onclick="fillAndSend('Биномын тархалт n=10, p=0.4 үед P(X=3) хэд вэ?')">Биномын P(X=3)</div>
         <div class="chip" onclick="fillAndSend('Нормаль тархалт μ=75, σ=8 үед P(X≤70) хэд вэ?')">Нормаль P(X≤70)</div>
@@ -254,7 +254,7 @@ async function solve(question){
     if(!full)throw new Error('Хариу хоосон ирлээ — дахин оролдоно уу');
 
     const ab=document.createElement('div');ab.className='bubble-ai';
-    ab.innerHTML='<span class="ai-lbl">∑ СтатШийдвэрлэгч</span>'+esc(full);
+    ab.innerHTML='<span class="ai-lbl">∑ УхаантайПзд</span>'+esc(full);
     output.appendChild(ab);
     saveToHistory(question,full);
   }catch(e){
@@ -291,7 +291,7 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 // PWA manifest
-const mf={name:'СтатШийдвэрлэгч',short_name:'СтатШийдвэрлэгч',start_url:'/',display:'standalone',background_color:'#0a0c0f',theme_color:'#0a0c0f',icons:[{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%2300e5a0'/><text x='96' y='130' text-anchor='middle' font-size='110' font-family='monospace' fill='%230a0c0f'>%CE%A3</text></svg>",sizes:'192x192',type:'image/svg+xml'}]};
+const mf={name:'УхаантайПзд',short_name:'УхаантайПзд',start_url:'/',display:'standalone',background_color:'#0a0c0f',theme_color:'#0a0c0f',icons:[{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%233b82f6'/><text x='96' y='130' text-anchor='middle' font-size='110' font-family='monospace' fill='%230a0c0f'>%CE%A3</text></svg>",sizes:'192x192',type:'image/svg+xml'}]};
 const ml=document.createElement('link');ml.rel='manifest';ml.href=URL.createObjectURL(new Blob([JSON.stringify(mf)],{type:'application/manifest+json'}));document.head.appendChild(ml);
 </script>
 </body>
