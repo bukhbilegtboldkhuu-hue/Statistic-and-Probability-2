@@ -259,26 +259,30 @@ async function solve(question){
     const reader=res.body.getReader();
     const decoder=new TextDecoder();
     let full='';
+    let leftover='';
     while(true){
       const{done,value}=await reader.read();
       if(done)break;
-      const chunk=decoder.decode(value,{stream:true});
+      const chunk=leftover+decoder.decode(value,{stream:true});
       const lines=chunk.split('\n');
+      leftover=lines.pop()||'';
       for(const line of lines){
-        if(!line.startsWith('data:'))continue;
-        const d=line.slice(5).trim();
-        if(d==='[DONE]')break;
+        const trimmed=line.trim();
+        if(!trimmed.startsWith('data:'))continue;
+        const d=trimmed.slice(5).trim();
+        if(d==='[DONE]')continue;
         try{
           const j=JSON.parse(d);
-          const delta=j.choices?.[0]?.delta?.content||'';
-          full+=delta;
-          textEl.textContent=full;
-          output.scrollTop=output.scrollHeight;
-        }catch{}
+          if(j.error)throw new Error(j.error.message||'API алдаа');
+          const delta=j.choices?.[0]?.delta?.content;
+          if(delta){full+=delta;textEl.textContent=full;output.scrollTop=output.scrollHeight;}
+        }catch(parseErr){
+          if(parseErr.message&&parseErr.message!=='API алдаа')continue;
+        }
       }
     }
     cursor.remove();
-    if(!full){textEl.textContent='Хариу ирсэнгүй.';}
+    if(!full.trim()){textEl.textContent='Хариу ирсэнгүй — дахин оролдоно уу.';}
     saveToHistory(question,full);
   }catch(e){
     th.remove();
