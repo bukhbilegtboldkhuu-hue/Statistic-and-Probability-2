@@ -24,7 +24,7 @@ function callOpenRouter(question, res) {
   console.log('API_KEY:', API_KEY ? API_KEY.slice(0,15)+'...' : 'MISSING!');
 
   const payload = JSON.stringify({
-    model: 'mistralai/mistral-7b-instruct:free',
+    model: 'deepseek/deepseek-r1:free',
     stream: false,
     messages: [
       { role: 'system', content: SYSTEM },
